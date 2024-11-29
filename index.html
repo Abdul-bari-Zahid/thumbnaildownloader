@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Thumbnail Downloader</title>
+    <style>body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    
+    .container {
+        text-align: center;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    h1 {
+        color: #333;
+    }
+    
+    form {
+        margin-bottom: 20px;
+    }
+    
+    input[type="text"] {
+        padding: 10px;
+        width: 70%;
+        max-width: 300px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 5px;
+    }
+    
+    select {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 5px;
+    }
+    
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 30px;
+    }
+    
+    button:hover {
+        background-color: #0dee50;
+        transform: scale(1.2);
+        transition: transform 0.2s;
+        /* transform: scaleX(9.2);
+        transition: transform 0.2s; */
+    }
+    
+    .thumbnail-container {
+        margin-top: 50px;
+        
+       
+    }
+    
+    img {
+        max-width: 30%;
+        /* max-height: 10vh; */
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Thumbnail Downloader</h1>
+        <form id="thumbnailForm">
+            <input type="text" id="videoURL" placeholder="Enter YouTube video URL" required>
+            <select id="thumbnailSize">
+                <option value="default">Small</option>
+                <option value="mqdefault">Medium</option>
+                <option value="maxresdefault">Large</option>
+            </select>
+            <button type="submit">Get Thumbnail</button>
+        </form>
+        <div class="thumbnail-container">
+            <img id="thumbnail" src="data:image/jpeg;base64,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" alt="YouTube thumbnail dowmloader">
+        </div>
+    </div>
+    <script>document.getElementById('thumbnailForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+    
+        const videoURL = document.getElementById('videoURL').value;
+        const videoId = getVideoId(videoURL);
+        const size = document.getElementById('thumbnailSize').value;
+    
+        if (videoId) {
+            const thumbnailURL = `https://img.youtube.com/vi/${videoId}/${size}.jpg`;
+            document.getElementById('thumbnail').src = thumbnailURL;
+        } else {
+            alert('Please enter a valid YouTube video URL.');
+        }
+    });
+    
+    function getVideoId(url) {
+        const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+        const match = url.match(regex);
+        return match ? match[1] : null;
+    }
+    </script>
+</body>
+</html>
